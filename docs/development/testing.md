@@ -8,7 +8,9 @@ and switching between the dock and the original arrange view.
 `test/test-personal-home.js` checks the separate theme guard: adopting the
 existing theme, reapplying it to stock Home, preserving unrelated upstream
 edits, refusing conflicting or ambiguous edits without touching Home, waiting
-for installers, disabling protection and retaining recovery copies. It also
+for installers, disabling protection and retaining recovery copies. The polling
+check also verifies one notification per restoration or error and that the
+guard never stops or restarts Glasshouse. It also
 checks that the generated patch exactly matches the reviewed Home page.
 Run ShellCheck on `personal-home/51-glasshouse-home-theme` separately; this
 personal package is not installed by the upstream deployment script.

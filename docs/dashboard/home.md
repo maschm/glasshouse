@@ -130,7 +130,8 @@ The Sonos label uses the device name reported by the TV; it is not a volume
 control or a sound-output status indicator. This theme targets webOS 10.3.1.
 With the separate [personal Home protection](../../personal-home/README.md)
 installed, compatible Glasshouse updates automatically get the scenic dock
-back. If an update changes the parts it needs, Home stays as supplied by that
+back; a TV restart may be needed to display it. If an update changes the
+parts it needs, Home stays as supplied by that
 update and a message requests a compatibility check. The saved theme is kept.
 Uploaded wallpapers already survive ordinary Glasshouse updates.
 

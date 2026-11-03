@@ -8,8 +8,9 @@ The separately installed `personal-home` package lives at
 without a network listener. Every five seconds it checks Home, waiting for
 Glasshouse update/deploy staging and a 15-second settling period to finish.
 It reapplies only exact, unique replacements, saves stock and themed copies,
-atomically replaces `/var/lib/tvweb/assets/home.html`, then restarts Glasshouse
-once to clear its asset cache. Conflicts leave the installed page untouched and
+atomically replaces `/var/lib/tvweb/assets/home.html`, and notifies the owner
+that a TV restart may be needed to display it. It never restarts Glasshouse,
+which could interrupt an app installation. Conflicts leave the installed page untouched and
 show a notification. The package keeps its status and recovery copies in its
 own directory, which ordinary Glasshouse releases do not replace.
 

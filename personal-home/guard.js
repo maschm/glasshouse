@@ -68,39 +68,27 @@ function applyTheme(installDir, themeDir) {
 }
 
 function run(installDir, themeDir) {
-  var busy = false, lastError = '', timer, observedMtime = null, settledSince = 0;
+  var lastError = '', timer, observedMtime = null, settledSince = 0;
   function notify(message) {
     execFile('/usr/bin/luna-send', ['-n', '1', '-w', '3000', 'luna://com.webos.notification/createToast', JSON.stringify({ message: message })],
       { timeout: 5000 }, function () {});
   }
   function check() {
-    if (busy) return;
-    busy = true;
     try {
-      if (fs.existsSync(path.join(themeDir, 'disabled'))) { clearInterval(timer); busy = false; return; }
+      if (fs.existsSync(path.join(themeDir, 'disabled'))) { clearInterval(timer); return; }
       var home = path.join(installDir, 'assets/home.html');
-      if (updating(installDir)) { observedMtime = null; busy = false; return; }
+      if (updating(installDir)) { observedMtime = null; return; }
       var mtime = fs.existsSync(home) ? Number(fs.statSync(home).mtime) : null;
       if (mtime !== observedMtime) { observedMtime = mtime; settledSince = Date.now(); }
       // Leave time for the installer's service restart after it removes staging.
-      if (mtime !== null && Date.now() - settledSince < 15000) { busy = false; return; }
+      if (mtime !== null && Date.now() - settledSince < 15000) { return; }
       var result = applyTheme(installDir, themeDir);
       lastError = '';
-      if (result.state === 'disabled') { clearInterval(timer); busy = false; return; }
+      if (result.state === 'disabled') { clearInterval(timer); return; }
       if (result.state === 'review-required') notify('The custom Home needs a compatibility check. The current Home is unchanged and the saved theme is kept.');
-      if (result.state !== 'restored') { busy = false; return; }
-      // Glasshouse caches assets in memory, so replacing the file needs one restart.
-      execFile('/bin/sh', [path.join(installDir, 'tvwebctl'), 'restart'], { timeout: 30000 }, function (error) {
-        busy = false;
-        if (error) {
-          var status = readJson(path.join(themeDir, 'status.json')) || {};
-          status.state = 'restart-required';
-          try { writeAtomic(path.join(themeDir, 'status.json'), JSON.stringify(status) + '\n'); } catch (e) {}
-          notify('The custom Home is restored. Restart the TV to finish loading it.');
-        }
-      });
+      // shortcut: no safe restart-only API exists; never interrupt an app install.
+      if (result.state === 'restored') notify('The custom Home is restored. Restart the TV if the previous Home is still showing.');
     } catch (error) {
-      busy = false;
       if (error.message !== lastError) {
         lastError = error.message;
         try { writeAtomic(path.join(themeDir, 'status.json'), JSON.stringify({ state: 'error', reason: error.message }) + '\n'); } catch (e) {}

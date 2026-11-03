@@ -20,12 +20,14 @@ once. Do not replace Glasshouse's own `50-tvweb` hook. Re-running the hook
 leaves an already-running guard alone.
 
 After about 15 seconds, `status.json` in the theme directory should say
-`active`. `last-stock-home.html` and `last-themed-home.html` are recovery
+`active`, meaning the theme is installed on disk. `last-stock-home.html` and `last-themed-home.html` are recovery
 copies. The PID file is `/var/run/glasshouse-home-theme.pid`. Nothing listens
 on a network port, and no credentials are included in this package.
 
 An update normally restores the theme within 15–25 seconds of its files
-settling, with one additional Glasshouse restart. Uploaded wallpapers and
+settling. Glasshouse caches the page in memory, so a notification explains
+that a TV restart may be needed to display it. The guard never restarts
+Glasshouse: it must not interrupt an app installation. Uploaded wallpapers and
 layout settings remain in Glasshouse's existing persistent storage.
 
 ## Pause or recover
@@ -37,8 +39,8 @@ official Glasshouse release. The LG Home tile remains the normal escape route.
 
 If `status.json` says `review-required`, keep the new working Home until the
 theme has been checked against that release. Do not blindly copy an older
-full Home page over a new release. `restart-required` means the file was
-restored but Glasshouse could not be restarted; restart the TV to load it.
+full Home page over a new release. If the theme is `active` on disk but the
+previous Home is still showing, restart the TV to load it.
 
 For a revised theme, review `server/assets/home.html`, run
 `python3 personal-home/build-patch.py`, and run

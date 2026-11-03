@@ -61,14 +61,14 @@ try {
   assert.throws(function () { guard.replaceExact('safe', [], false); }, /no replacements/);
 
   fs.unlinkSync(path.join(theme, 'disabled'));
-  var tick, restarts = 0, messages = [], stopped = false, failRestart = false;
+  var tick, messages = [], stopped = false;
   var context = {
     module: { exports: {} }, install: install, theme: theme, now: 30000,
     require: function (name) {
       if (name !== 'child_process') return require(name);
       return { execFile: function (file, args, options, cb) {
-        if (file === '/bin/sh') { restarts++; cb(failRestart ? new Error('restart failed') : null); }
-        else { messages.push(args); cb(null); }
+        assert.strictEqual(file, '/usr/bin/luna-send', 'guard never restarts or stops Glasshouse, including during an app install');
+        messages.push(args); cb(null);
       } };
     },
     setInterval: function (fn) { tick = fn; return 1; },
@@ -77,25 +77,16 @@ try {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../personal-home/guard.js'), 'utf8') +
     '\nDate.now = function () { return now; }; run(install, theme);', context);
   context.now += 10000; tick();
-  assert.strictEqual(restarts, 0, 'guard waits for the page to settle');
+  assert.strictEqual(messages.length, 0, 'guard waits for the page to settle');
   fs.mkdirSync(path.join(install, '.deploy')); tick();
   fs.rmdirSync(path.join(install, '.deploy'));
   context.now += 5000; tick();
-  assert.strictEqual(restarts, 0, 'finishing staging starts a fresh settling period');
+  assert.strictEqual(messages.length, 0, 'finishing staging starts a fresh settling period');
   context.now += 15000; tick();
-  assert.strictEqual(restarts, 1, 'restored page restarts Glasshouse once to clear its cache');
-  tick();
-  assert.strictEqual(restarts, 1, 'active theme does not restart again');
-
-  fs.writeFileSync(home, stock);
-  fs.utimesSync(home, new Date(1000), new Date(1000));
-  failRestart = true;
+  assert.strictEqual(fs.readFileSync(home, 'utf8'), custom, 'guard restores the theme without restarting Glasshouse');
+  assert.strictEqual(messages.length, 1, 'one message explains that a restart may be needed');
   tick(); context.now += 15000; tick();
-  assert.strictEqual(restarts, 2);
-  assert.strictEqual(JSON.parse(fs.readFileSync(path.join(theme, 'status.json'), 'utf8')).state, 'restart-required');
-  tick();
-  assert.strictEqual(restarts, 2, 'failed restart does not loop');
-  assert.strictEqual(messages.length, 1, 'failed restart requests manual recovery once');
+  assert.strictEqual(messages.length, 1, 'unchanged restored theme does not repeat its message');
 
   fs.writeFileSync(path.join(theme, 'patch.json'), '{invalid');
   context.now += 15000; tick(); tick();
