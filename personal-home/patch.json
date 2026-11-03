@@ -1,7 +1,7 @@
 {
   "baseVersion": "0.138.0",
   "baseSha256": "0bbdfe7d3e11aafdc381fdb34adaacda5b51461b114f2917cc19f473e9be77df",
-  "customSha256": "d6cc9f7f0b6f709c6c73d20b2ac30a18af8c21f81ae4654b8d1173c89d5871d9",
+  "customSha256": "3baec3c87a077dd255d5d40b679466f856fcb65bc617ef10f2386bcfce0ff767",
   "edits": [
     {
       "before": "body.no-drift #wall .layer{-webkit-animation:none;animation:none}\nbody.no-crossfade #wall .layer{-webkit-transition:none;transition:none}\nbody.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide #folderGrid,body.no-slide #hits{-webkit-transition:none;transition:none}\n</style>\n</head>\n<body>\n<div id=\"stage\" class=\"no-search\">\n  <div id=\"wall\"><div class=\"layer\"></div><div class=\"layer\"></div></div>\n  <div id=\"scrim\"></div>\n\n  <section id=\"now\">\n    <div id=\"when\">\n",
@@ -26,6 +26,10 @@
     {
       "before": "\n  // noScroll: focus only, as the pointer does, leaving each row where it is.\n  function applyFocus(instant, noScroll) {\n    var rows = document.querySelectorAll('.row');\n    for (var ri = 0; ri < rows.length; ri++) {\n      var rowEl = rows[ri], kind = rowEl.getAttribute('data-key'), active = ri === state.row && state.bar < 0 && !state.rail;\n      rowEl.className = 'row' + (rowEl.getAttribute('data-empty') ? ' empty' : '') + (active ? ' active' : '') + (active && state.held ? ' held-row' : '');\n      var tiles = rowEl.querySelectorAll('.tile'), c = colOf(kind);\n      for (var ci = 0; ci < tiles.length; ci++) {\n",
       "after": "\n  // noScroll: focus only, as the pointer does, leaving each row where it is.\n  function applyFocus(instant, noScroll) {\n    $('scenicSettings').className = state.settings ? 'focus' : '';\n    var rows = document.querySelectorAll('.row');\n    for (var ri = 0; ri < rows.length; ri++) {\n      var rowEl = rows[ri], kind = rowEl.getAttribute('data-key'), active = ri === state.row && state.bar < 0 && !state.rail && !state.settings;\n      rowEl.className = 'row' + (rowEl.getAttribute('data-empty') ? ' empty' : '') + (active ? ' active' : '') + (active && state.held ? ' held-row' : '');\n      var tiles = rowEl.querySelectorAll('.tile'), c = colOf(kind);\n      for (var ci = 0; ci < tiles.length; ci++) {\n"
+    },
+    {
+      "before": "    var rowEl = rowElOf(key);\n    var track = rowEl && rowEl.querySelector('.track'), wrap = rowEl && rowEl.querySelector('.wrap');\n    if (!track || !wrap) return null;\n    var view = wrap.clientWidth - 44, tr = trackOf(key);\n    tr.max = Math.max(0, track.scrollWidth - view);\n    return { track: track, view: view };\n  }\n",
+      "after": "    var rowEl = rowElOf(key);\n    var track = rowEl && rowEl.querySelector('.track'), wrap = rowEl && rowEl.querySelector('.wrap');\n    if (!track || !wrap) return null;\n    var view = wrap.clientWidth - (key === 'app' && scenic() ? 76 : 44), tr = trackOf(key);\n    tr.max = Math.max(0, track.scrollWidth - view);\n    return { track: track, view: view };\n  }\n"
     },
     {
       "before": "  }\n\n  function activate() {\n    if (state.rail) return openSearch();\n    var kind = rowKey(), it = items(kind)[colOf(kind)];\n    if (!it) return;\n",

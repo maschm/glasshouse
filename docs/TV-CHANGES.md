@@ -14,6 +14,9 @@ which could interrupt an app installation. Conflicts leave the installed page un
 show a notification. The package keeps its status and recovery copies in its
 own directory, which ordinary Glasshouse releases do not replace.
 
+The protected page includes the personal dock and its app gradients. It uses
+the existing local app icons to draw the marks in the Home browser.
+
 Creating `/var/lib/glasshouse-home-theme/disabled` stops protection at its next
 check and prevents it starting at boot; it does not change the current Home.
 See [installation and recovery](../personal-home/README.md). LG firmware

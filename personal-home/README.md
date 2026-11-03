@@ -45,9 +45,11 @@ previous Home is still showing, restart the TV to load it.
 
 For a revised theme, review `server/assets/home.html`, run
 `python3 personal-home/build-patch.py`, and run
-`node test/test-personal-home.js` before replacing the package files. The
-builder pins the original v0.138.0 base. A theme rebased onto a different stock
-release needs its base version and hashes regenerated and tested together.
+`node test/test-personal-home.js`. Back up the previous page and manifest, then
+pause the guard and install the revised page and `patch.json` together. Resume
+the guard, verify its active hash, and reload Home. The builder pins the original
+v0.138.0 base. A theme rebased onto a different stock release needs its base
+version and hashes regenerated and tested together.
 
 LG firmware updates, factory resets and loss of root are outside this package.
 Future changes to installation paths, boot hooks or Home APIs may require
