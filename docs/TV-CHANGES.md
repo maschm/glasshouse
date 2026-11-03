@@ -1,5 +1,25 @@
 # What the dashboard changes on the TV
 
+## Personal C2 Home protection
+
+The separately installed `personal-home` package lives at
+`/var/lib/glasshouse-home-theme`; its own Homebrew boot hook is
+`/var/lib/webosbrew/init.d/51-glasshouse-home-theme`. It runs a small Node process
+without a network listener. Every five seconds it checks Home, waiting for
+Glasshouse update/deploy staging and a 15-second settling period to finish.
+It reapplies only exact, unique replacements, saves stock and themed copies,
+atomically replaces `/var/lib/tvweb/assets/home.html`, and notifies the owner
+that a TV restart may be needed to display it. It never restarts Glasshouse,
+which could interrupt an app installation. Conflicts leave the installed page untouched and
+show a notification. The package keeps its status and recovery copies in its
+own directory, which ordinary Glasshouse releases do not replace.
+
+Creating `/var/lib/glasshouse-home-theme/disabled` stops protection at its next
+check and prevents it starting at boot; it does not change the current Home.
+See [installation and recovery](../personal-home/README.md). LG firmware
+updates, loss of root and future changes to Glasshouse's installation or Home
+interfaces are outside this protection.
+
 ## Audio capabilities and DTS forwarding
 
 The Audio tabs read LG's capability, settings and ARC services, the current
