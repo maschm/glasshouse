@@ -4,7 +4,7 @@ Keeps the scenic two-row Home through compatible Glasshouse updates. This is
 a separate package for the rooted C2 running webOS 10.3.1 and Node 16.20.2;
 the upstream installer does not install it.
 
-The guard reapplies the reviewed changes from stock v0.138.0. All 15 text
+The guard reapplies the reviewed changes from stock v0.138.0. All text
 replacements must match exactly once before any change is written. Other
 changes from the new release are retained. A conflict keeps the installed Home
 untouched, preserves the last themed copy and shows one notification requesting
@@ -45,9 +45,11 @@ previous Home is still showing, restart the TV to load it.
 
 For a revised theme, review `server/assets/home.html`, run
 `python3 personal-home/build-patch.py`, and run
-`node test/test-personal-home.js` before replacing the package files. The
-builder pins the original v0.138.0 base. A theme rebased onto a different stock
-release needs its base version and hashes regenerated and tested together.
+`node test/test-personal-home.js`. Back up the previous page and manifest, then
+pause the guard and install the revised page and `patch.json` together. Resume
+the guard, verify its active hash, and reload Home. The builder pins the original
+v0.138.0 base. A theme rebased onto a different stock release needs its base
+version and hashes regenerated and tested together.
 
 LG firmware updates, factory resets and loss of root are outside this package.
 Future changes to installation paths, boot hooks or Home APIs may require
@@ -59,6 +61,11 @@ The minimal dark background is saved as [abstract-slate.jpg](abstract-slate.jpg)
 with its [generation prompt](wallpaper.md). Upload it through Home's wallpaper
 settings for each of the four time slots. Glasshouse stores these uploads
 outside its release assets.
+
+The translucent dock gives the nine household streaming apps their own
+gradients. It lifts the marks from the TV's installed artwork when the known
+flat colour is present. Apps with other artwork keep their original icons.
+The selected tile keeps its gradient and shows its name and a bright outline.
 
 On 3 November 2026, the official v0.138.0 updater reinstalled 165 files on an
 OLED65C26LD running webOS 10.3.1. The guard reapplied the custom Home within
