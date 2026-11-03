@@ -66,6 +66,9 @@ The translucent dock gives the nine household streaming apps their own
 gradients. It lifts the marks from the TV's installed artwork when the known
 flat colour is present. Apps with other artwork keep their original icons.
 The selected tile keeps its gradient and shows its name and a bright outline.
+Focus glides into place and the name fades in. A remote OK press or pointer
+click briefly compresses the tile artwork. The wallpaper crossfade stays under
+two seconds. Reduced motion keeps the press outline and skips those animations.
 
 ## Hourly wallpaper shuffle
 
