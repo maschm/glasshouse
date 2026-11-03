@@ -1,5 +1,10 @@
 # Testing and CI
 
+`test/test-home-dock.js` checks the personal C2 theme's two-line app navigation,
+including incomplete lines, row edges and additional horizontal pages. Browser
+and real-TV checks also cover launching, returning Home, the settings shortcut
+and switching between the dock and the original arrange view.
+
 Every pull request is checked on [GitHub Actions](https://github.com/rorygallagher2024/glasshouse/actions) before it is merged. Most of
 the checks exist because a mistake of that kind once reached a release, or
 could have without anyone noticing: the TV gives little feedback when

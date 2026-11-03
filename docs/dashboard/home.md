@@ -121,6 +121,15 @@ LG's search needs the TV online and LG's search server (`gb.nextlgsdp.com` on a 
 
 ## Wallpapers
 
+This personal C2 branch adapts **Alternative View** to a scenic dock with five
+apps per line and two lines per page. Left and right reach further pages when
+needed; up and down move between the lines and the input shortcuts. Up from
+the first line reaches the Glasshouse settings button. The LG Home tile and
+holding Home remain available. Holding OK uses the original arrange view.
+The Sonos label uses the device name reported by the TV; it is not a volume
+control or a sound-output status indicator. This theme targets webOS 10.3.1;
+installing a stock Glasshouse update replaces the theme.
+
 By default, Glasshouse Home uses a pure `#000` OLED black background (and leaves the TV's [screen saver](screen-savers.md) untouched). It can instead show a picture for each of four times of day: **Morning** (06:00 to 11:00), **Afternoon** (11:00 to 17:00), **Evening** (17:00 to 21:00) and **Night** (21:00 to 06:00).
 
 The **Wallpaper** section offers four choices:
