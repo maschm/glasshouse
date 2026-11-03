@@ -1,0 +1,13 @@
+#!/bin/sh
+DIR=/var/lib/glasshouse-wallpaper-shuffle
+PID=/var/run/glasshouse-wallpaper-shuffle.pid
+cd / || exit 1
+[ -x /usr/bin/node ] && [ -f "$DIR/shuffle-wallpapers.js" ] && [ -f "$DIR/started" ] || exit 0
+[ ! -e "$DIR/disabled" ] || exit 0
+pid=$(cat "$PID" 2>/dev/null)
+case "$pid" in
+  ''|*[!0-9]*) ;;
+  *) if kill -0 "$pid" 2>/dev/null && tr '\0' '\n' < "/proc/$pid/cmdline" 2>/dev/null | grep -Fxq "$DIR/shuffle-wallpapers.js"; then exit 0; fi ;;
+esac
+rm -f "$PID"
+/sbin/start-stop-daemon -S -b -m -p "$PID" -x /usr/bin/node -- "$DIR/shuffle-wallpapers.js"

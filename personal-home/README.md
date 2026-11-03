@@ -67,6 +67,22 @@ gradients. It lifts the marks from the TV's installed artwork when the known
 flat colour is present. Apps with other artwork keep their original icons.
 The selected tile keeps its gradient and shows its name and a bright outline.
 
+## Hourly wallpaper shuffle
+
+The personal C2 has a separate shuffle at `/var/lib/glasshouse-wallpaper-shuffle`.
+Keep the six JPEGs there as `1.jpg` through `6.jpg` with distinct modification
+times, along with `shuffle-wallpapers.js` and `started` (the start time in Unix
+milliseconds). The four uploaded slot paths point to this directory's
+`current.jpg`. Boot hook `52-glasshouse-wallpaper-shuffle` starts the timer.
+Glasshouse's own wallpaper refresh picks up the selected picture. The shuffle
+visits all six before repeating and changes the picture every 60 minutes.
+
+To pause, create `disabled` in the shuffle directory. To recover the previous
+look, pause the shuffle and restore the original uploads from `original/` in
+that directory. Restore only slots that still point to `current.jpg` so any
+newly uploaded wallpapers are preserved. Selecting a built-in set or black
+still works. Changing or deleting any upload slot stops the timer.
+
 On 3 November 2026, the official v0.138.0 updater reinstalled 165 files on an
 OLED65C26LD running webOS 10.3.1. The guard reapplied the custom Home within
 20 seconds; the guard, boot hook, settings, layout and all four wallpapers

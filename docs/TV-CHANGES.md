@@ -17,6 +17,11 @@ own directory, which ordinary Glasshouse releases do not replace.
 The protected page includes the personal dock and its app gradients. It uses
 the existing local app icons to draw the marks in the Home browser.
 
+The optional personal wallpaper shuffle runs from its own Homebrew boot hook.
+It switches a link to one of six local JPEGs every hour. The four owned
+wallpaper slots follow that link and the original uploads are backed up. See
+[pause and recovery](../personal-home/README.md#hourly-wallpaper-shuffle).
+
 Creating `/var/lib/glasshouse-home-theme/disabled` stops protection at its next
 check and prevents it starting at boot; it does not change the current Home.
 See [installation and recovery](../personal-home/README.md). LG firmware
