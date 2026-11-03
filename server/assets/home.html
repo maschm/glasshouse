@@ -404,27 +404,43 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 .scenic:not(.arranging) #when{order:0;width:auto;text-align:left}
 .scenic:not(.arranging) #clock{font-size:44px;letter-spacing:-1px}
 .scenic:not(.arranging) #date{display:none}
-.scenic:not(.arranging) #scrim{background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 26%,transparent 49%,rgba(9,18,20,.25) 65%,rgba(19,28,30,.82))}
+.scenic:not(.arranging) #scrim{background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 26%,transparent 55%,rgba(9,16,25,.2) 76%,rgba(9,16,25,.62))}
 .scenic:not(.arranging) #rows{bottom:42px}
 .scenic:not(.arranging) .row{margin-bottom:16px}
-.scenic:not(.arranging) .row[data-key="app"] .wrap{margin:0 60px;padding:28px 38px;border:1px solid rgba(244,242,234,.37);border-radius:50px;
-  background:linear-gradient(180deg,rgba(100,115,123,.7),rgba(36,42,44,.78))}
+.scenic:not(.arranging) .row[data-key="app"] .wrap{margin:0 60px;padding:24px 38px;border:1px solid rgba(236,245,255,.34);border-radius:48px;
+  background:radial-gradient(ellipse at 15% 0%,rgba(190,211,237,.19),transparent 72%),linear-gradient(165deg,rgba(91,110,139,.39),rgba(28,39,54,.56));
+  box-shadow:0 20px 52px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.16)}
 .scenic:not(.arranging) .row[data-key="app"] .track{display:block;height:304px}
-.scenic:not(.arranging) .row[data-key="app"] .tile{position:absolute;width:328px;height:142px;margin:0;padding:12px;border-radius:24px;background:rgba(15,22,27,.83);opacity:1}
+.scenic:not(.arranging) .row[data-key="app"] .tile{position:absolute;width:328px;height:142px;margin:0;padding:12px;border-radius:30px;
+  background:linear-gradient(155deg,#344256,#151d2a);opacity:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 3px 8px rgba(0,0,0,.22)}
 .scenic:not(.arranging) .row[data-key="app"] .app>img,.scenic:not(.arranging) .row[data-key="app"] .app>.mono{width:86px;height:86px;border-radius:14px}
 .scenic:not(.arranging) .row[data-key="app"] .mono{line-height:86px}
 .scenic:not(.arranging) .row[data-key="app"] .fold{width:86px;height:86px;padding:8px}
 .scenic:not(.arranging) .row[data-key="app"] .fold i,.scenic:not(.arranging) .row[data-key="app"] .fold i img{width:31px;height:31px;line-height:31px}
 .scenic:not(.arranging) .row[data-key="app"] .nm{font-size:22px;margin-top:6px}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="tv2"]{background:linear-gradient(155deg,#34437e,#090e30 80%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="dr"]{background:linear-gradient(155deg,#ef3856,#a40a29 85%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="netflix"]{background:linear-gradient(155deg,#fff,#dce0eb);color:#242834;text-shadow:none}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="disney"]{background:linear-gradient(155deg,#176e82,#062d3b 85%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="prime"]{background:linear-gradient(155deg,#219ed7,#094082 87%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="max"]{background:linear-gradient(155deg,#393961,#0d1022 83%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="yousee"]{background:linear-gradient(155deg,#4b5d43,#232e25 83%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="viaplay"]{background:linear-gradient(155deg,#553553,#211e32 83%)}
+.scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="youtube"]{background:linear-gradient(155deg,#fff,#dbe0e9);color:#242834;text-shadow:none}
+.scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark{width:168px;height:90px;margin:12px auto 0;border-radius:0;object-fit:contain}
+.scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark+.nm{position:absolute;left:14px;right:14px;bottom:7px;margin:0;font-size:18px;opacity:0}
+.scenic:not(.arranging) .row[data-key="app"] .app.focus>img.dock-mark+.nm{opacity:1}
 .scenic:not(.arranging) .row[data-key="dev"] .wrap{margin:0 60px;padding:7px}
 .scenic:not(.arranging) .dev{width:300px;height:72px;border-radius:36px;padding:12px 24px;background:rgba(37,44,45,.9);opacity:1}
 .scenic:not(.arranging) .dev .nm{font-size:25px;line-height:1.1}
 .scenic:not(.arranging) .dev .path{font-size:16px;color:#d6dcdf}
 .scenic:not(.arranging) .dev .st{display:none}
-.scenic:not(.arranging) .row .tile.focus{outline:4px solid #fff1d8;outline-offset:3px;background:rgba(55,65,66,.95);transform:scale(1.025);z-index:1}
+.scenic:not(.arranging) .row .tile.focus{outline:3px solid #f4f7ff;outline-offset:3px;transform:scale(1.025);z-index:1}
+.scenic:not(.arranging) .row[data-key="app"] .tile.focus{transform:scale(1.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 18px rgba(0,0,0,.44)}
+.scenic:not(.arranging) .row[data-key="dev"] .tile.focus{background:rgba(55,65,66,.95)}
 #scenicSettings,#scenicAudio{display:none}
 .scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicSettings{display:block;position:absolute;right:74px;top:44px;width:56px;height:56px;padding:8px;
-  border:0;border-radius:14px;color:#f4f2ea;background:rgba(37,44,45,.65);cursor:pointer;z-index:2}
+  border:1px solid rgba(236,245,255,.27);border-radius:50%;color:#f4f7ff;background:linear-gradient(155deg,rgba(136,154,178,.34),rgba(47,60,81,.54));cursor:pointer;z-index:2}
 #scenicSettings svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
 #scenicSettings.focus{outline:4px solid #fff1d8;outline-offset:3px}
 .scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicAudio:not(:empty){display:block;position:absolute;right:74px;bottom:68px;padding:16px 28px;border-radius:32px;
@@ -767,6 +783,9 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     return t('home.row.channelsNote', '{n} added', { n: list.length });
   }
 
+  // Leave room for the dock's inset so the next set of tiles stays offscreen.
+  var DOCK_PAGE_WIDTH = 1776;
+
   function render() {
     stageClass();
     var audio = data.devices.filter(function (d) { return /sonos/i.test(d.name); })[0];
@@ -784,7 +803,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
         '<h2>' + esc(ROW_TITLES[kind]) + (list.length && note ? '<span>' + note + '</span>' : '') +
         '<em class="sort">' + esc(sortLabel(kind)) + '</em></h2>' +
         (list.length ? '<div class="wrap"><i class="edge l"></i><i class="edge r"></i><div class="track"' +
-          (dock ? ' style="width:' + (Math.ceil(list.length / 10) * 1740 - 20) + 'px"' : '') + '>' + tiles + '</div></div>'
+          (dock ? ' style="width:' + ((Math.ceil(list.length / 10) - 1) * DOCK_PAGE_WIDTH + 1720) + 'px"' : '') + '>' + tiles + '</div></div>'
           : '<div class="slot">' + note + '</div>') +
         '</section>';
     });
@@ -825,10 +844,73 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   var hiddenLabel = '<span class="hid">' + esc(t('home.hidden', 'Hidden')) + '</span>';
   var folderLabel = '<span class="fld">' + esc(t('home.folder.label', 'In More apps')) + '</span>';
 
-  function appIcon(a) {
-    return a.icon ? '<img src="' + esc(a.icon) + '" alt="">' :
+  // The known flat colours of LG's installed app artwork. Other versions
+  // keep the original icon if their artwork no longer matches these mattes.
+  var dockBrands = {
+    tv2play: ['tv2', '000523'], 'dk.dr.drtv.webos2': ['dr', 'ff001e'],
+    netflix: ['netflix', 'ffffff'], 'com.disney.disneyplus-prod': ['disney', '054553'],
+    amazon: ['prime', '0578ff'], 'com.wbd.stream': ['max', '00030c'],
+    'dk.yousee.app': ['yousee', '3c3f34'], 'viaplay-lg': ['viaplay', '1c272d'],
+    'youtube.leanback.v4': ['youtube', 'ffffff']
+  };
+  var dockMarks = {};
+
+  function appIcon(a, brand) {
+    return a.icon ? '<img' + (brand ? ' data-matte="' + brand[1] + '"' : '') + ' src="' + esc(a.icon) + '" alt="">' :
       '<span class="mono">' + esc(a.lg ? 'LG' : String(a.title).charAt(0)) + '</span>';
   }
+
+  function cutDockMark(img, matte) {
+    var w = img.naturalWidth, h = img.naturalHeight;
+    if (w < 32 || h < 32 || w > 256 || h > 256) return '';
+    var canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return '';
+    ctx.drawImage(img, 0, 0);
+    var pixels = ctx.getImageData(0, 0, w, h), p = pixels.data;
+    var bg = [parseInt(matte.slice(0, 2), 16), parseInt(matte.slice(2, 4), 16), parseInt(matte.slice(4, 6), 16)];
+    function onMatte(i) {
+      return Math.max(Math.abs(p[i] - bg[0]), Math.abs(p[i + 1] - bg[1]), Math.abs(p[i + 2] - bg[2])) < 12;
+    }
+    var corners = [0, (w - 1) * 4, (h - 1) * w * 4, (w * h - 1) * 4];
+    if (!corners.every(function (i) { return p[i + 3] === 255 && onMatte(i); })) return '';
+    var left = w, right = -1, top = h, bottom = -1;
+    for (var i = 0; i < p.length; i += 4) {
+      if (!p[i + 3] || onMatte(i)) { p[i + 3] = 0; continue; }
+      // Recover a straight-alpha edge from the original solid matte.
+      var alpha = 0, j, d;
+      for (j = 0; j < 3; j++) {
+        d = p[i + j] - bg[j];
+        if (d) alpha = Math.max(alpha, d > 0 ? d / (255 - bg[j]) : -d / bg[j]);
+      }
+      for (j = 0; j < 3; j++) p[i + j] = bg[j] + (p[i + j] - bg[j]) / alpha;
+      p[i + 3] *= alpha;
+      var x = (i / 4) % w, y = Math.floor(i / 4 / w);
+      left = Math.min(left, x); right = Math.max(right, x);
+      top = Math.min(top, y); bottom = Math.max(bottom, y);
+    }
+    if (right <= left || bottom <= top || (left === 0 && right === w - 1 && top === 0 && bottom === h - 1)) return '';
+    canvas.width = right - left + 1; canvas.height = bottom - top + 1;
+    ctx.putImageData(pixels, -left, -top);
+    return canvas.toDataURL('image/png');
+  }
+
+  document.addEventListener('load', function (e) {
+    var img = e.target;
+    if (img.tagName !== 'IMG') return;
+    var matte = img.getAttribute('data-matte');
+    if (!matte) return;
+    img.removeAttribute('data-matte');
+    var brand = img.parentNode.getAttribute('data-brand'), cached = dockMarks[brand];
+    if (!cached || cached.source !== img.src) {
+      cached = { source: img.src, mark: '' };
+      try { cached.mark = cutDockMark(img, matte); } catch (_) { /* unreadable art keeps the native icon */ }
+      dockMarks[brand] = cached;
+    }
+    if (cached.mark) { img.className = 'dock-mark'; img.src = cached.mark; }
+  }, true);
+
   // The first four of the folder's icons, as the tile that opens it.
   function folderIcon(inside) {
     var html = '';
@@ -840,12 +922,14 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 
   var TILE = {
     app: function (a, i, dock) {
-      var position = dock ? ' style="left:' + (Math.floor(i / 10) * 1740 + i % 5 * 348) + 'px;top:' + (Math.floor(i % 10 / 5) * 162) + 'px"' : '';
+      var position = dock ? ' style="left:' + (Math.floor(i / 10) * DOCK_PAGE_WIDTH + i % 5 * 348) + 'px;top:' + (Math.floor(i % 10 / 5) * 162) + 'px"' : '';
       if (a.folder) {
         return '<div class="tile app" data-c="' + i + '"' + position + '>' + folderIcon(a.folder) + '<div class="nm">' + esc(a.title) + '</div></div>';
       }
       var cls = 'tile app' + (hidden('app', a.id) ? ' hidden' : inFolder('app', a.id) ? ' folded' : '');
-      return '<div class="' + cls + '" data-c="' + i + '"' + position + '>' + appIcon(a) + '<div class="nm">' + esc(a.title) + '</div>' +
+      var brand = dock && Object.prototype.hasOwnProperty.call(dockBrands, a.id) ? dockBrands[a.id] : null;
+      var style = brand ? ' data-brand="' + brand[0] + '"' : '';
+      return '<div class="' + cls + '" data-c="' + i + '"' + position + style + '>' + appIcon(a, brand) + '<div class="nm">' + esc(a.title) + '</div>' +
         hiddenLabel + folderLabel + '</div>';
     },
     dev: function (d, i) {
