@@ -405,8 +405,14 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 .scenic:not(.arranging) #clock{font-size:44px;letter-spacing:-1px}
 .scenic:not(.arranging) #date{display:none}
 .scenic:not(.arranging) #scrim{background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 26%,transparent 55%,rgba(9,16,25,.2) 76%,rgba(9,16,25,.62))}
+body:not(.no-crossfade) .scenic #wall .layer{-webkit-transition:opacity 1.65s ease-in-out;transition:opacity 1.65s ease-in-out}
 .scenic:not(.arranging) #rows{bottom:42px}
 .scenic:not(.arranging) .row{margin-bottom:16px}
+.scenic:not(.arranging) #rows .tile{-webkit-transition:background-color .12s,outline-color .1s,-webkit-transform .18s cubic-bezier(.2,.8,.2,1);
+  transition:background-color .12s,outline-color .1s,transform .18s cubic-bezier(.2,.8,.2,1)}
+.scenic:not(.arranging) #rows .tile>:first-child,#scenicSettings svg{-webkit-transition:-webkit-transform .1s ease-out;transition:transform .1s ease-out}
+.scenic:not(.arranging) #rows .tile.pressing>:first-child,.scenic:not(.arranging) #rows .tile:active>:first-child,
+#scenicSettings.pressing svg,#scenicSettings:active svg{-webkit-transform:scale(.94);transform:scale(.94)}
 .scenic:not(.arranging) .row[data-key="app"] .wrap{margin:0 60px;padding:24px 38px;border:1px solid rgba(236,245,255,.34);border-radius:48px;
   background:radial-gradient(ellipse at 15% 0%,rgba(190,211,237,.19),transparent 72%),linear-gradient(165deg,rgba(91,110,139,.39),rgba(28,39,54,.56));
   box-shadow:0 20px 52px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.16)}
@@ -428,7 +434,8 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 .scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="viaplay"]{background:linear-gradient(155deg,#553553,#211e32 83%)}
 .scenic:not(.arranging) .row[data-key="app"] .tile[data-brand="youtube"]{background:linear-gradient(155deg,#fff,#dbe0e9);color:#242834;text-shadow:none}
 .scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark{width:168px;height:90px;margin:12px auto 0;border-radius:0;object-fit:contain}
-.scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark+.nm{position:absolute;left:14px;right:14px;bottom:7px;margin:0;font-size:18px;opacity:0}
+.scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark+.nm{position:absolute;left:14px;right:14px;bottom:7px;margin:0;font-size:18px;opacity:0;
+  -webkit-transition:opacity .14s ease-out;transition:opacity .14s ease-out}
 .scenic:not(.arranging) .row[data-key="app"] .app.focus>img.dock-mark+.nm{opacity:1}
 .scenic:not(.arranging) .row[data-key="dev"] .wrap{margin:0 60px;padding:7px}
 .scenic:not(.arranging) .dev{width:300px;height:72px;border-radius:36px;padding:12px 24px;background:rgba(37,44,45,.9);opacity:1}
@@ -438,14 +445,22 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 .scenic:not(.arranging) .row .tile.focus{outline:3px solid #f4f7ff;outline-offset:3px;transform:scale(1.025);z-index:1}
 .scenic:not(.arranging) .row[data-key="app"] .tile.focus{transform:scale(1.04);box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 8px 18px rgba(0,0,0,.44)}
 .scenic:not(.arranging) .row[data-key="dev"] .tile.focus{background:rgba(55,65,66,.95)}
+.scenic:not(.arranging) #rows .tile.focus.pressing,.scenic:not(.arranging) #rows .tile.focus:active{outline-color:#afcbff}
 #scenicSettings,#scenicAudio{display:none}
 .scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicSettings{display:block;position:absolute;right:74px;top:44px;width:56px;height:56px;padding:8px;
   border:1px solid rgba(236,245,255,.27);border-radius:50%;color:#f4f7ff;background:linear-gradient(155deg,rgba(136,154,178,.34),rgba(47,60,81,.54));cursor:pointer;z-index:2}
 #scenicSettings svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
 #scenicSettings.focus{outline:4px solid #fff1d8;outline-offset:3px}
+#scenicSettings.focus.pressing,#scenicSettings.focus:active{outline-color:#afcbff}
 .scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicAudio:not(:empty){display:block;position:absolute;right:74px;bottom:68px;padding:16px 28px;border-radius:32px;
   font-size:23px;background:rgba(37,44,45,.9);color:#f4f2ea}
-@media(prefers-reduced-motion:reduce){.scenic .tile{transition:none}}
+@media(prefers-reduced-motion:reduce){
+  .scenic:not(.arranging) #rows .tile,.scenic:not(.arranging) #rows .tile>:first-child,#scenicSettings svg,
+  .scenic:not(.arranging) .row[data-key="app"] .app>img.dock-mark+.nm,
+  body:not(.no-crossfade) .scenic #wall .layer{-webkit-transition:none;transition:none}
+  .scenic:not(.arranging) #rows .tile.pressing>:first-child,.scenic:not(.arranging) #rows .tile:active>:first-child,
+  #scenicSettings.pressing svg,#scenicSettings:active svg{-webkit-transform:none;transform:none}
+}
 </style>
 </head>
 <body>
@@ -2584,6 +2599,12 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 
   // ---------------------------------------------------------------- input
 
+  var pressing = null;
+  function releasePress() {
+    if (pressing) pressing.classList.remove('pressing');
+    pressing = null;
+  }
+
   function onKeyDown(e) {
     stopPointing();
     landAll();
@@ -2607,7 +2628,13 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
       okInRecents = recents.open;
       okInFolder = folder.open;
       if (okInRecents || okInFolder) return;
+      // Show the press while OK is held; release still opens on its normal path.
+      if (scenic()) {
+        pressing = state.settings ? $('scenicSettings') : document.querySelector('#rows .tile.focus');
+        if (pressing) pressing.classList.add('pressing');
+      }
       okTimer = setTimeout(function () {
+        releasePress();
         okLong = true;
         state.settings = false;
         if (state.held) return;
@@ -2646,6 +2673,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     if (e.keyCode !== KEY.ok || !okDownAt) return;
     e.preventDefault();
     clearTimeout(okTimer);
+    releasePress();
     okDownAt = 0;
     if (okLong || layoutBusy) return;
     if (okInRecents) { if (recents.open) recentsKey(KEY.ok); return; }
@@ -3049,6 +3077,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   }
 
   function returned() {
+    releasePress();
     tilePreview.opened = null;
     var dark = faded;
     if (!dark) fadeIn();
@@ -3082,6 +3111,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   }
 
   window.addEventListener('resize', fit);
+  window.addEventListener('blur', releasePress);
   document.addEventListener('keydown', onKeyDown, true);
   document.addEventListener('keyup', onKeyUp, true);
   document.addEventListener('mousemove', onPointer);
@@ -3104,7 +3134,9 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   document.addEventListener('click', onClick);
   // Home pressed with the view already open reaches it as a relaunch.
   document.addEventListener('webOSRelaunch', returned);
-  document.addEventListener('visibilitychange', function () { if (document.hidden) darken(); else returned(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) { releasePress(); darken(); } else returned();
+  });
   window.addEventListener('pagehide', stopPreview);
 
   // Started dark where fading is chosen; in at the first catalogue, or before
