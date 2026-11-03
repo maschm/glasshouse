@@ -20,8 +20,9 @@ once. Do not replace Glasshouse's own `50-tvweb` hook. Re-running the hook
 leaves an already-running guard alone.
 
 After about 15 seconds, `status.json` in the theme directory should say
-`active`, meaning the theme is installed on disk. `last-stock-home.html` and `last-themed-home.html` are recovery
-copies. The PID file is `/var/run/glasshouse-home-theme.pid`. Nothing listens
+`active`, meaning the theme is installed on disk. `last-stock-home.html` and
+`last-themed-home.html` are recovery copies. The PID file is
+`/var/run/glasshouse-home-theme.pid`. Nothing listens
 on a network port, and no credentials are included in this package.
 
 An update normally restores the theme within 15–25 seconds of its files
@@ -51,3 +52,17 @@ release needs its base version and hashes regenerated and tested together.
 LG firmware updates, factory resets and loss of root are outside this package.
 Future changes to installation paths, boot hooks or Home APIs may require
 repair. The last saved theme remains available for that work.
+
+## Background and verification
+
+The minimal dark background is saved as [abstract-slate.jpg](abstract-slate.jpg),
+with its [generation prompt](wallpaper.md). Upload it through Home's wallpaper
+settings for each of the four time slots. Glasshouse stores these uploads
+outside its release assets.
+
+On 3 November 2026, the official v0.138.0 updater reinstalled 165 files on an
+OLED65C26LD running webOS 10.3.1. The guard reapplied the custom Home within
+20 seconds; the guard, boot hook, settings, layout and all four wallpapers
+survived unchanged. A full TV reboot started the guard automatically and
+served the custom page. The guard regression suite also passed on the TV's
+Node 16.20.2 runtime. API requests without the access token still returned 401.
