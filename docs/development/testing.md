@@ -5,6 +5,14 @@ including incomplete lines, row edges and additional horizontal pages. Browser
 and real-TV checks also cover launching, returning Home, the settings shortcut
 and switching between the dock and the original arrange view.
 
+`test/test-personal-home.js` checks the separate theme guard: adopting the
+existing theme, reapplying it to stock Home, preserving unrelated upstream
+edits, refusing conflicting or ambiguous edits without touching Home, waiting
+for installers, disabling protection and retaining recovery copies. It also
+checks that the generated patch exactly matches the reviewed Home page.
+Run ShellCheck on `personal-home/51-glasshouse-home-theme` separately; this
+personal package is not installed by the upstream deployment script.
+
 Every pull request is checked on [GitHub Actions](https://github.com/rorygallagher2024/glasshouse/actions) before it is merged. Most of
 the checks exist because a mistake of that kind once reached a release, or
 could have without anyone noticing: the TV gives little feedback when
