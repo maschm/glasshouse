@@ -397,12 +397,47 @@ html.faded #stage{opacity:0}
 body.no-drift #wall .layer{-webkit-animation:none;animation:none}
 body.no-crossfade #wall .layer{-webkit-transition:none;transition:none}
 body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide #folderGrid,body.no-slide #hits{-webkit-transition:none;transition:none}
+
+/* Personal C2 theme: Alternative View keeps the existing launcher and recovery
+   paths, with ten apps per horizontal page in a low, two-line dock. */
+.scenic:not(.arranging) #now{height:132px;padding:0 74px;align-items:center}
+.scenic:not(.arranging) #when{order:0;width:auto;text-align:left}
+.scenic:not(.arranging) #clock{font-size:44px;letter-spacing:-1px}
+.scenic:not(.arranging) #date{display:none}
+.scenic:not(.arranging) #scrim{background:linear-gradient(180deg,rgba(0,0,0,.22),transparent 26%,transparent 49%,rgba(9,18,20,.25) 65%,rgba(19,28,30,.82))}
+.scenic:not(.arranging) #rows{bottom:42px}
+.scenic:not(.arranging) .row{margin-bottom:16px}
+.scenic:not(.arranging) .row[data-key="app"] .wrap{margin:0 60px;padding:28px 38px;border:1px solid rgba(244,242,234,.37);border-radius:50px;
+  background:linear-gradient(180deg,rgba(100,115,123,.7),rgba(36,42,44,.78))}
+.scenic:not(.arranging) .row[data-key="app"] .track{display:block;height:304px}
+.scenic:not(.arranging) .row[data-key="app"] .tile{position:absolute;width:328px;height:142px;margin:0;padding:12px;border-radius:24px;background:rgba(15,22,27,.83);opacity:1}
+.scenic:not(.arranging) .row[data-key="app"] .app>img,.scenic:not(.arranging) .row[data-key="app"] .app>.mono{width:86px;height:86px;border-radius:14px}
+.scenic:not(.arranging) .row[data-key="app"] .mono{line-height:86px}
+.scenic:not(.arranging) .row[data-key="app"] .fold{width:86px;height:86px;padding:8px}
+.scenic:not(.arranging) .row[data-key="app"] .fold i,.scenic:not(.arranging) .row[data-key="app"] .fold i img{width:31px;height:31px;line-height:31px}
+.scenic:not(.arranging) .row[data-key="app"] .nm{font-size:22px;margin-top:6px}
+.scenic:not(.arranging) .row[data-key="dev"] .wrap{margin:0 60px;padding:7px}
+.scenic:not(.arranging) .dev{width:300px;height:72px;border-radius:36px;padding:12px 24px;background:rgba(37,44,45,.9);opacity:1}
+.scenic:not(.arranging) .dev .nm{font-size:25px;line-height:1.1}
+.scenic:not(.arranging) .dev .path{font-size:16px;color:#d6dcdf}
+.scenic:not(.arranging) .dev .st{display:none}
+.scenic:not(.arranging) .row .tile.focus{outline:4px solid #fff1d8;outline-offset:3px;background:rgba(55,65,66,.95);transform:scale(1.025);z-index:1}
+#scenicSettings,#scenicAudio{display:none}
+.scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicSettings{display:block;position:absolute;right:74px;top:44px;width:56px;height:56px;padding:8px;
+  border:0;border-radius:14px;color:#f4f2ea;background:rgba(37,44,45,.65);cursor:pointer;z-index:2}
+#scenicSettings svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
+#scenicSettings.focus{outline:4px solid #fff1d8;outline-offset:3px}
+.scenic:not(.arranging):not(.recents):not(.finding):not(.folder) #scenicAudio:not(:empty){display:block;position:absolute;right:74px;bottom:68px;padding:16px 28px;border-radius:32px;
+  font-size:23px;background:rgba(37,44,45,.9);color:#f4f2ea}
+@media(prefers-reduced-motion:reduce){.scenic .tile{transition:none}}
 </style>
 </head>
 <body>
 <div id="stage" class="no-search">
   <div id="wall"><div class="layer"></div><div class="layer"></div></div>
   <div id="scrim"></div>
+  <button id="scenicSettings" aria-label="Settings" data-t-aria-label="ctl.settings" tabindex="-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 3 .7-1h3.6l.7 1 .4 2 1.6.9 1.9-.6 1.2.1 1.8 3.1-.5 1.1-1.5 1.4v1.9l1.5 1.4.5 1.1-1.8 3.1-1.2.1-1.9-.6-1.6.9-.4 2-.7 1h-3.6l-.7-1-.4-2-1.6-.9-1.9.6-1.2-.1-1.8-3.1.5-1.1 1.5-1.4v-1.9l-1.5-1.4-.5-1.1 1.8-3.1 1.2-.1 1.9.6 1.6-.9z"/><circle cx="12" cy="12" r="3.3"/></svg></button>
+  <div id="scenicAudio"></div>
 
   <section id="now">
     <div id="when">
@@ -500,7 +535,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   var lastOn = { kind: null };
   // last: the tile focused last, which the bar's Hide or show acts on. rail:
   // the search mark in the left gutter has the focus.
-  var state = { row: 0, col: {}, arranging: false, held: false, bar: -1, last: null, rail: false };
+  var state = { row: 0, col: {}, arranging: false, held: false, bar: -1, last: null, rail: false, settings: false };
   var BAR = ['btnHide', 'btnFolder', 'btnReset', 'btnDone'];
   var build = null;
   var okDownAt = 0, okTimer = null, okLong = false, okInRecents = false, okInFolder = false, backDown = false;
@@ -734,18 +769,22 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 
   function render() {
     stageClass();
+    var audio = data.devices.filter(function (d) { return /sonos/i.test(d.name); })[0];
+    $('scenicAudio').textContent = audio ? audio.name : '';
     var html = '';
     barWidths = [];
     if (!shown(state.row)) state.row = nextShown(0, 1);
     layout.rows.forEach(function (kind, ri) {
       var list = items(kind);
       var tiles = '';
-      list.forEach(function (it, i) { tiles += TILE[kind](it, i); });
+      var dock = scenic() && kind === 'app';
+      list.forEach(function (it, i) { tiles += TILE[kind](it, i, dock); });
       var note = esc(rowNote(kind, list));
       html += '<section class="row"' + (list.length ? '' : ' data-empty="1"') + ' data-row="' + ri + '" data-key="' + kind + '">' +
         '<h2>' + esc(ROW_TITLES[kind]) + (list.length && note ? '<span>' + note + '</span>' : '') +
         '<em class="sort">' + esc(sortLabel(kind)) + '</em></h2>' +
-        (list.length ? '<div class="wrap"><i class="edge l"></i><i class="edge r"></i><div class="track">' + tiles + '</div></div>'
+        (list.length ? '<div class="wrap"><i class="edge l"></i><i class="edge r"></i><div class="track"' +
+          (dock ? ' style="width:' + (Math.ceil(list.length / 10) * 1740 - 20) + 'px"' : '') + '>' + tiles + '</div></div>'
           : '<div class="slot">' + note + '</div>') +
         '</section>';
     });
@@ -800,12 +839,13 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   }
 
   var TILE = {
-    app: function (a, i) {
+    app: function (a, i, dock) {
+      var position = dock ? ' style="left:' + (Math.floor(i / 10) * 1740 + i % 5 * 348) + 'px;top:' + (Math.floor(i % 10 / 5) * 162) + 'px"' : '';
       if (a.folder) {
-        return '<div class="tile app" data-c="' + i + '">' + folderIcon(a.folder) + '<div class="nm">' + esc(a.title) + '</div></div>';
+        return '<div class="tile app" data-c="' + i + '"' + position + '>' + folderIcon(a.folder) + '<div class="nm">' + esc(a.title) + '</div></div>';
       }
       var cls = 'tile app' + (hidden('app', a.id) ? ' hidden' : inFolder('app', a.id) ? ' folded' : '');
-      return '<div class="' + cls + '" data-c="' + i + '">' + appIcon(a) + '<div class="nm">' + esc(a.title) + '</div>' +
+      return '<div class="' + cls + '" data-c="' + i + '"' + position + '>' + appIcon(a) + '<div class="nm">' + esc(a.title) + '</div>' +
         hiddenLabel + folderLabel + '</div>';
     },
     dev: function (d, i) {
@@ -854,9 +894,10 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
 
   // noScroll: focus only, as the pointer does, leaving each row where it is.
   function applyFocus(instant, noScroll) {
+    $('scenicSettings').className = state.settings ? 'focus' : '';
     var rows = document.querySelectorAll('.row');
     for (var ri = 0; ri < rows.length; ri++) {
-      var rowEl = rows[ri], kind = rowEl.getAttribute('data-key'), active = ri === state.row && state.bar < 0 && !state.rail;
+      var rowEl = rows[ri], kind = rowEl.getAttribute('data-key'), active = ri === state.row && state.bar < 0 && !state.rail && !state.settings;
       rowEl.className = 'row' + (rowEl.getAttribute('data-empty') ? ' empty' : '') + (active ? ' active' : '') + (active && state.held ? ' held-row' : '');
       var tiles = rowEl.querySelectorAll('.tile'), c = colOf(kind);
       for (var ci = 0; ci < tiles.length; ci++) {
@@ -1379,6 +1420,11 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   }
 
   function activate() {
+    if (state.settings) {
+      return postJson('/api/home/open', { kind: 'app', id: 'com.tvweb.dashboard' }, function (r) {
+        if (!r || !r.ok) toast(t('home.openFailed', 'That did not open'), r && r.error);
+      });
+    }
     if (state.rail) return openSearch();
     var kind = rowKey(), it = items(kind)[colOf(kind)];
     if (!it) return;
@@ -1399,7 +1445,37 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     });
   }
 
+  function scenic() { return layout && layout.view === 'alternative' && !state.arranging; }
+
+  // Null crosses to another section; horizontal edges never wrap to the other line.
+  function dockNext(col, count, dr, dc) {
+    var line = Math.floor(col % 10 / 5), next = col;
+    if (dr) {
+      if (dr < 0 && line === 1) return col - 5;
+      if (dr > 0 && line === 0 && Math.floor(col / 10) * 10 + 5 < count) return Math.min(col + 5, count - 1);
+      return null;
+    }
+    if (dc) {
+      next += dc;
+      if (dc > 0 && col % 5 === 4) next = col + 6;
+      if (dc < 0 && col % 5 === 0) next = col - 6;
+    }
+    return next >= 0 && next < count ? next : col;
+  }
+
   function move(dr, dc) {
+    var previousKind = rowKey();
+    if (scenic()) {
+      if (state.settings) {
+        if (dr > 0 || dc < 0) { state.settings = false; applyFocus(); }
+        return;
+      }
+      if (previousKind === 'app' && !state.rail && !(dc < 0 && colOf('app') === 0 && searchOn())) {
+        var next = dockNext(colOf('app'), items('app').length, dr, dc);
+        if (next !== null) { state.col.app = next; return applyFocus(); }
+        if (dr < 0 && state.row === nextShown(0, 1)) { state.settings = true; return applyFocus(); }
+      }
+    }
     var onSort = colOf(rowKey()) === -1;
     // Left of any row's first tile is the search rail, outside arranging;
     // right goes back to the tile it came from.
@@ -1408,12 +1484,16 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
       return;
     }
     if (dc < 0 && !state.arranging && searchOn() && colOf(rowKey()) === 0) {
-      state.rail = true;
+      state.rail = true; state.settings = false;
       return applyFocus();
     }
     if (dr) {
       var to = nextShown(state.row + dr, dr);
       if (to >= 0 && to < layout.rows.length && shown(to)) state.row = to;
+      if (scenic() && rowKey() === 'app' && previousKind !== 'app' && dr < 0) {
+        var remembered = colOf('app');
+        if (remembered % 10 < 5) state.col.app = Math.min(remembered + 5, items('app').length - 1);
+      }
     }
     // Up and down from a row's Order go to the next row's.
     if (dr && onSort) state.col[rowKey()] = -1;
@@ -1430,10 +1510,11 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
   }
 
   function stageClass() {
+    if (!scenic()) state.settings = false;
     $('stage').className = (state.arranging ? 'arranging' : '') + (recents.open ? ' recents' : '') +
       (finder.open ? ' finding' : '') + (finder.typing ? ' typing' : '') + (searchOn() ? '' : ' no-search') + (folder.open ? ' folder' : '') +
       (layout && layout.showClock === false ? ' no-clock' : '') + (layout && layout.rowsBottom === true ? ' rows-bottom' : '') +
-      (layout && layout.view === 'alternative' ? ' alternative' : '');
+      (layout && layout.view === 'alternative' ? ' alternative scenic' : '');
     followPreview();
   }
 
@@ -1962,7 +2043,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     $('query').blur();
     $('query').value = '';
     $('hits').innerHTML = '';
-    state.rail = true;
+    state.rail = true; state.settings = false;
     stageClass();
     applyFocus();
   }
@@ -2444,6 +2525,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
       if (okInRecents || okInFolder) return;
       okTimer = setTimeout(function () {
         okLong = true;
+        state.settings = false;
         if (state.held) return;
         setArranging(!state.arranging);
       }, LONG_PRESS_MS);
@@ -2453,6 +2535,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
       e.preventDefault();
       if (backDown) return;
       backDown = true;
+      if (state.settings) { state.settings = false; return applyFocus(); }
       if (folder.open) return closeFolder();
       if (recents.open || recents.loading) return closeRecents();
       if (state.arranging && state.held) { state.held = false; return toggleHidden(); }
@@ -2515,8 +2598,12 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
       }
       return;
     }
+    if (scenic() && !recents.open && within(target, 'scenicSettings')) {
+      state.settings = true; state.rail = false;
+      return applyFocus(false, true);
+    }
     if (!state.arranging && searchOn() && within(target, 'rail')) {
-      if (!state.rail) { state.rail = true; state.bar = -1; applyFocus(false, true); }
+      if (!state.rail || state.settings) { state.rail = true; state.settings = false; state.bar = -1; applyFocus(false, true); }
       return;
     }
     var tile = tileAt(target);
@@ -2532,8 +2619,8 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     while (rowEl && !/\brow\b/.test(rowEl.className)) rowEl = rowEl.parentNode;
     if (!rowEl) return;
     var r = +rowEl.getAttribute('data-row'), c = +tile.getAttribute('data-c'), kind = layout.rows[r];
-    if (state.row !== r || colOf(kind) !== c || state.bar >= 0 || state.rail) {
-      state.row = r; state.col[kind] = c; state.bar = -1; state.rail = false;
+    if (state.row !== r || colOf(kind) !== c || state.bar >= 0 || state.rail || state.settings) {
+      state.row = r; state.col[kind] = c; state.bar = -1; state.rail = false; state.settings = false;
       applyFocus(false, true);
     }
   }
@@ -2547,6 +2634,7 @@ body.no-slide #recents,body.no-slide #finder,body.no-slide #folder,body.no-slide
     }
     if (recents.open) return recentsClick(e.target);
     if (finder.open) return finderClick(e.target);
+    if (scenic() && within(e.target, 'scenicSettings')) { state.settings = true; return activate(); }
     if (!state.arranging && searchOn() && within(e.target, 'rail')) return openSearch();
     var btn = e.target && e.target.id;
     if (BAR.indexOf(btn) !== -1) return pressBar(BAR.indexOf(btn));
